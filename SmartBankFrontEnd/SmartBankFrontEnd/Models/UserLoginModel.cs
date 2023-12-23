@@ -12,7 +12,7 @@ namespace SmartBankFrontEnd.Models
         public string Email { get; set; }
 
         [DisplayName("Пароль")]
-        [Required(ErrorMessage = "Введіть пошту")]
+        [Required(ErrorMessage = "Введіть пароль")]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         [StringLength(50)]
         public string Password { get; set; }

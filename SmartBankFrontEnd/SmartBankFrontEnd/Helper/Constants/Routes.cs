@@ -4,5 +4,6 @@
     {
         public const string MainApiLink = "http://localhost:5076/";
         public const string AuthLogin = "auth/login";
+        public const string AdminUserList = "admin/user/list";
     }
 }
