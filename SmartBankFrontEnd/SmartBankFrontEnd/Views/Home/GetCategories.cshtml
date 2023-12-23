@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SmartBankFrontEnd.Models.CategoryModel>
+
+@{
+    ViewData["Title"] = "GetCategories";
+}
+
+<h1>Категорії</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+        </tr>
+    }
+        <p>
+            @Html.ActionLink("Створити нову категорію", "AddCategory", new { token = Model.First().Token, userId = Model.First().UserId })
+        </p>
+    </tbody>
+</table>

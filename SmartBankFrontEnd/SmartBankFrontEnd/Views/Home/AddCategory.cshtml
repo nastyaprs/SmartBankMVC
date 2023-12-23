@@ -1,0 +1,25 @@
+﻿@model SmartBankFrontEnd.Models.CategoryModel
+
+@{
+    ViewData["Title"] = "AddCategory";
+}
+
+<h1>Створити нову категорію</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddCategory" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Token" />
+            <input type="hidden" asp-for="UserId" />
+            <button type="submit" class="btn btn-primary">Створити</button>
+        </form>
+    </div>
+</div>
+

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
+using SmartBankFrontEnd.Helper.Constants;
 using SmartBankFrontEnd.Helper.Enums;
 using SmartBankFrontEnd.Interfaces;
 using SmartBankFrontEnd.Models;
@@ -63,7 +65,7 @@ namespace SmartBankFrontEnd.Controllers
             }
             else if(callAdminPage?.ResponseResult == ResponseResultEnum.WrongRole)
             {
-                //TODO: add view
+                return RedirectToAction("Main", new { token = token });
             }
 
             return RedirectToAction("Login");
@@ -72,7 +74,120 @@ namespace SmartBankFrontEnd.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            var 
+            var userRegisterModel = new UserRegisterModel();
+            return View(userRegisterModel);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(UserRegisterModel userRegisterModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await _authService.RegisterNewUser(userRegisterModel);
+
+                    if (result == true)
+                    {
+                        return RedirectToAction("Login");
+                    }
+                    else if(result == false)
+                    {
+                        userRegisterModel.ErrorMessage = ErrorMessages.EmailIsTaken;
+                        return View(userRegisterModel);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return View(userRegisterModel);
+        }
+
+        [HttpGet]
+        public IActionResult Verify(FullUserModel fullUserModel)
+        {
+            return View(fullUserModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Verify(int id, string token)
+        {
+            try
+            {
+                var result = await _userService.VefiryUser(id, token);
+
+                if (result)
+                {
+                    return RedirectToAction("Index", new { token = token });
+                }
+                else
+                {
+                    return RedirectToAction("Login");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("Index", new { token = token });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Main(string token)
+        {
+            var result = await _userService.GetUserProfile(token);
+
+            if(result == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            return View(result);
+        }
+
+        [HttpGet]       
+        public async Task<IActionResult> GetCategories(string token, int id)
+        {
+            var result =await _userService.GetUsersCategories(id, token);
+
+            return View(result);
+        }
+
+        [HttpGet]
+        public IActionResult AddCategory(string token, int userId)
+        {
+            var category = new CategoryModel()
+            {
+                Token = token,
+                UserId = userId
+            };
+
+            return View(category);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCategory(CategoryModel categoryModel)
+        {
+            try
+            {
+                var result = await _userService.AddNewCategory(categoryModel);
+
+                if (result)
+                {
+                   return RedirectToAction("Main", new { token = categoryModel.Token });
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("AddCategory", new { token = categoryModel.Token, userId = categoryModel.UserId });
+        }
+        
     }
 }

@@ -32,7 +32,18 @@ namespace SmartBankFrontEnd.Models
 
         public AddressModel Address { get; set; } = null!;
 
+        [DisplayName("Країна")]
+        public string Country { get; set; } = null!;
+
+        [DisplayName("Місто")]
+        public string City { get; set; } = null!;
+
+        [DisplayName("Вулиця, будинок, квартира")]
+        public string AddressLine { get; set; } = null!;
+
         [DisplayName("Дата реєстрації")]
         public DateTime DateIn { get; set; }
+
+        public string Token { get; set; } = string.Empty;
     }
 }

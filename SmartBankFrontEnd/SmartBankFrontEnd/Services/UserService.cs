@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
+using NuGet.Common;
 using SmartBankFrontEnd.Helper.Constants;
 using SmartBankFrontEnd.Helper.Dtos;
 using SmartBankFrontEnd.Helper.Enums;
 using SmartBankFrontEnd.Interfaces;
 using SmartBankFrontEnd.Models;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace SmartBankFrontEnd.Services
 {
@@ -12,7 +14,7 @@ namespace SmartBankFrontEnd.Services
     {
         public async Task<GetUnverifiedUsersResultDto?> GetUnverifiedUsers(string token)
         {
-            string apiUrl = Routes.MainApiLink + Routes.AdminUserList;
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.AdminUserList;
 
             using (HttpClient client = new HttpClient())
             {
@@ -24,6 +26,17 @@ namespace SmartBankFrontEnd.Services
                 {
                     string jsonContent = await response.Content.ReadAsStringAsync();
                     List<FullUserModel>? userList = JsonConvert.DeserializeObject<List<FullUserModel>>(jsonContent);
+
+                    if(userList != null)
+                    {
+                        foreach (var item in userList)
+                        {
+                            item.Token = token;
+                            item.Country = item.Address.Country;
+                            item.City = item.Address.City;
+                            item.AddressLine = item.Address.AddressLine;
+                        }
+                    }
 
                     return new GetUnverifiedUsersResultDto
                     {
@@ -41,6 +54,110 @@ namespace SmartBankFrontEnd.Services
                 else
                 {
                     return null;
+                }
+            }
+        }
+
+        public async Task<bool> VefiryUser(int id, string token)
+        {
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.VerifyUser+id.ToString();
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response = await client.PutAsync(apiUrl, null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public async Task<FullUserModel?> GetUserProfile(string token)
+        {
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.UserProfile;
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    FullUserModel? user = JsonConvert.DeserializeObject<FullUserModel>(jsonContent);
+
+                    if (user != null)
+                    {
+                        user.Token = token;
+                        user.Country = user.Address.Country;
+                        user.City = user.Address.City;
+                        user.AddressLine = user.Address.AddressLine;
+
+                        return user;
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<List<CategoryModel>> GetUsersCategories(int userId, string token)
+        {
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.CategoryList + userId.ToString();
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    List<CategoryModel> categories = JsonConvert.DeserializeObject<List<CategoryModel>>(jsonContent);
+
+                    foreach(var cat in categories)
+                    {
+                        cat.Token = token;
+                        cat.UserId = userId;
+                    }
+
+                    return categories;
+                }
+
+                return new List<CategoryModel>();
+            }
+        }
+
+        public async Task<bool> AddNewCategory(CategoryModel categoryModel)
+        {
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.CategoryAdd + categoryModel.UserId;
+
+            var jsonBody = JsonConvert.SerializeObject(categoryModel);
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", categoryModel.Token);
+
+                StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
         }

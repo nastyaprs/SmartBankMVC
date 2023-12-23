@@ -17,8 +17,9 @@ namespace SmartBankFrontEnd.Models
         [Required(ErrorMessage = "Введіть значення")]
         public string FathersName { get; set; } = null!;
 
-        [DisplayName("Дата народження (рік-місяць-день). Приклад: 2004-01-13")]
+        [DisplayName("Дата народження")]
         [Required(ErrorMessage = "Введіть значення")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
 
         [DisplayName("Номер паспорта")]
@@ -48,5 +49,7 @@ namespace SmartBankFrontEnd.Models
         [DisplayName("Вулиця, дім, квартира")]
         [Required(ErrorMessage = "Введіть значення")]
         public string AddressLine { get; set; } = null!;
+
+        public string ErrorMessage { get; set; } = string.Empty;
     }
 }

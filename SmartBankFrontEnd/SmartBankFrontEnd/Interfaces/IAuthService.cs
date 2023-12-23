@@ -6,5 +6,6 @@ namespace SmartBankFrontEnd.Interfaces
     public interface IAuthService
     {
         Task<LoginResultDto> GetUserByLogin(UserLoginModel userLoginModel);
+        Task<bool?> RegisterNewUser(UserRegisterModel userRegisterModel);
     }
 }
