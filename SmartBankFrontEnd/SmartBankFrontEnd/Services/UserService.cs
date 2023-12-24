@@ -162,5 +162,78 @@ namespace SmartBankFrontEnd.Services
                 }
             }
         }
+
+        public async Task<List<AccountModel>> GetUsersAccounts(int userId, string token)
+        {
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.AccountList + userId.ToString();
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    List<AccountModel> accounts = JsonConvert.DeserializeObject<List<AccountModel>>(jsonContent);
+
+                    foreach (var cat in accounts)
+                    {
+                        cat.Token = token;
+                        cat.UserId = userId;
+                    }
+
+                    return accounts;
+                }
+
+                return new List<AccountModel>();
+            }
+        }
+
+        public async Task<AccountDetailsModel?> GetAccountDetails(string token, int accountId)
+        {
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.AccountDetails + accountId.ToString();
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    AccountDetailsModel? account = JsonConvert.DeserializeObject<AccountDetailsModel>(jsonContent);
+
+                    account!.Token = token;
+
+                    return account;
+                }
+
+                return null;
+            }
+        }
+
+        public async Task<bool> AddNewAccount(int userId, string token)
+        {
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.AccountCreate + userId;
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response = await client.PostAsync(apiUrl, null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
     }
 }

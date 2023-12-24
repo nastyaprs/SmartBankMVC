@@ -10,5 +10,8 @@
         public const string UserProfile = "user/profile";
         public const string CategoryList = "user/category/list/";
         public const string CategoryAdd = "user/category/add/";
+        public const string AccountList = "user/account/list/";
+        public const string AccountDetails = "user/account/details/";
+        public const string AccountCreate = "user/account/create/";
     }
 }
