@@ -38,8 +38,14 @@
             </td>
             <td>
                 @Html.ActionLink("Деталі", "GetAccountDetails", new { accountId = item.Id, token = item.Token }) |
-                @Html.ActionLink("Поповнити", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Нова витрата", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Поповнити", "AddMoneyToAccount", new { token = item.Token, userId = item.UserId, accountId = item.Id }) |
+                    @Html.ActionLink("Нова витрата", "AddExpense", new 
+                    {
+                            userId = item.UserId,
+                            token = item.Token,
+                            accountId = item.Id,
+                            errorMessage = ""
+                    })
             </td>
         </tr>
 }

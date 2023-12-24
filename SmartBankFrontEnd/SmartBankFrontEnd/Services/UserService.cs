@@ -235,5 +235,59 @@ namespace SmartBankFrontEnd.Services
                 }
             }
         }
+
+        public async Task<bool> AddMoneyToAccount(AccountMoneyModel accountMoneyModel)
+        {
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.AccountMoneyAdd;
+
+            var jsonBody = JsonConvert.SerializeObject(accountMoneyModel);
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accountMoneyModel.Token);
+
+                StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public async Task<bool?> AddExpense(ExpenseAddModel expenseAddModel)
+        {
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.ExpenseAdd;
+
+            var jsonBody = JsonConvert.SerializeObject(expenseAddModel);
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", expenseAddModel.Token);
+
+                StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else if(response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    return false;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
     }
 }

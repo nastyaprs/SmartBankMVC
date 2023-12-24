@@ -13,5 +13,7 @@
         public const string AccountList = "user/account/list/";
         public const string AccountDetails = "user/account/details/";
         public const string AccountCreate = "user/account/create/";
+        public const string AccountMoneyAdd = "user/account/money/add";
+        public const string ExpenseAdd = "user/expense/add";
     }
 }

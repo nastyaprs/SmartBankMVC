@@ -1,0 +1,29 @@
+﻿@model SmartBankFrontEnd.Models.AccountMoneyModel
+
+@{
+    ViewData["Title"] = "AddMoneyToAccount";
+}
+
+<h1>Поповнити рахунок</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddMoneyToAccount">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AmountOfMoneyToAdd" class="control-label"></label>
+                <input asp-for="AmountOfMoneyToAdd" class="form-control" />
+                <span asp-validation-for="AmountOfMoneyToAdd" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Token" />
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-primary">Поповнити</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Повернутись назад", "GetAccounts", new { userId = Model.UserId, token = Model.Token });
+</div>

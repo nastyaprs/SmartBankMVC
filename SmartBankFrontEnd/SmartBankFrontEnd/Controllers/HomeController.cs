@@ -239,5 +239,88 @@ namespace SmartBankFrontEnd.Controllers
 
             return RedirectToAction("AddAccount", new { userId = currencyModel.UserId, token = currencyModel.Token });
         }
+
+        [HttpGet]
+        public IActionResult AddMoneyToAccount(string token, int userId, int accountId)
+        {
+            var model = new AccountMoneyModel()
+            {
+                Token = token,
+                UserId = userId,
+                Id = accountId
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddMoneyToAccount(AccountMoneyModel accountMoneyModel)
+        {
+            try
+            {
+                var result = await  _userService.AddMoneyToAccount(accountMoneyModel);
+
+                if (result)
+                {
+                    return RedirectToAction("GetAccounts", new { userId = accountMoneyModel.UserId, token = accountMoneyModel.Token });
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("AddMoneyToAccount", new { token = accountMoneyModel.Token, userId = accountMoneyModel.UserId, accountId = accountMoneyModel.Id });
+        }
+
+        [HttpGet]
+        public IActionResult AddExpense(int userId, string token, int accountId, string? errorMessage)
+        {
+            var expense = new ExpenseAddModel()
+            {
+                UserId = userId,
+                Token = token,
+                AccountId = accountId,
+                ErrorMessage = errorMessage
+            };
+
+            return View(expense);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddExpense(ExpenseAddModel expenseAddModel)
+        {
+            try
+            {
+                var result = await _userService.AddExpense(expenseAddModel);
+
+                if(result == true)
+                {
+                    return RedirectToAction("GetAccounts", new { userId = expenseAddModel.UserId, token = expenseAddModel.Token });
+                }
+                else if(result == false)
+                {
+                    return RedirectToAction("AddExpense", new
+                    {
+                        userId = expenseAddModel.UserId,
+                        token = expenseAddModel.Token,
+                        accountId = expenseAddModel.AccountId,
+                        errorMessage = "На вашому рахунку недостатньо грошей"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("AddExpense", new
+            {
+                userId = expenseAddModel.UserId,
+                token = expenseAddModel.Token,
+                accountId = expenseAddModel.AccountId,
+                errorMessage = ""
+            });
+        }
     }
 }

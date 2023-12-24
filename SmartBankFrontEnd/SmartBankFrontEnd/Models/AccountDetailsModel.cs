@@ -22,6 +22,8 @@ namespace SmartBankFrontEnd.Models
         [DisplayName("Витрати")]
         public List<ExpenseModel> Expenses { get; set; } = new List<ExpenseModel>();
 
+        public int CardId { get; set; }
+
         public string Token { get; set; } = string.Empty;
         public int? UserId { get; set; }
     }
