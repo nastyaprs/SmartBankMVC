@@ -188,6 +188,56 @@ namespace SmartBankFrontEnd.Controllers
 
             return RedirectToAction("AddCategory", new { token = categoryModel.Token, userId = categoryModel.UserId });
         }
-        
+
+        [HttpGet]
+        public async Task<IActionResult> GetAccounts(int userId, string token)
+        {
+            var accounts = await _userService.GetUsersAccounts(userId, token);
+
+            return View(accounts);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAccountDetails(int accountId, string token)
+        {
+            var accountDetails = await _userService.GetAccountDetails(token, accountId);
+
+            return View(accountDetails);
+        }
+
+        [HttpGet]
+        public IActionResult AddAccount(int userId, string token)
+        {
+            var currency = new CurrencyModel()
+            {
+                UserId = userId,
+                Token = token
+            };
+
+            return View(currency);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddAccount(CurrencyModel currencyModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await _userService.AddNewAccount(currencyModel.UserId, currencyModel.Id, currencyModel.Token);
+
+                    if (result)
+                    {
+                        return RedirectToAction("GetAccounts", new { userId = currencyModel.UserId, token = currencyModel.Token });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("AddAccount", new { userId = currencyModel.UserId, token = currencyModel.Token });
+        }
     }
 }

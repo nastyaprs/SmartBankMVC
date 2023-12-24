@@ -12,5 +12,8 @@ namespace SmartBankFrontEnd.Models
 
         [DisplayName("Категорія")]
         public string CategoryName { get; set; } = string.Empty;
+
+        [DisplayName("Витрачені гроші")]
+        public decimal Money { get; set; }
     }
 }

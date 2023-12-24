@@ -1,0 +1,51 @@
+﻿@model IEnumerable<SmartBankFrontEnd.Models.AccountModel>
+
+@{
+    ViewData["Title"] = "GetAccounts";
+}
+
+<h1>Рахунки</h1>
+
+<p>
+    @Html.ActionLink("Створити новий", "AddAccount", new { token = Model.First().Token, userId = Model.First().UserId })
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AmountOfMoney)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Currency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateIn)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmountOfMoney)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Currency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateIn)
+            </td>
+            <td>
+                @Html.ActionLink("Деталі", "GetAccountDetails", new { accountId = item.Id, token = item.Token }) |
+                @Html.ActionLink("Поповнити", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Нова витрата", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<p>
+    @Html.ActionLink("Повернутись назад", "Main", new { token = Model.First().Token })
+</p>

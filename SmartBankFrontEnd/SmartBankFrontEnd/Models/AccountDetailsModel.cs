@@ -23,5 +23,6 @@ namespace SmartBankFrontEnd.Models
         public List<ExpenseModel> Expenses { get; set; } = new List<ExpenseModel>();
 
         public string Token { get; set; } = string.Empty;
+        public int? UserId { get; set; }
     }
 }

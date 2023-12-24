@@ -1,0 +1,67 @@
+﻿@model SmartBankFrontEnd.Models.AccountDetailsModel
+
+@{
+    ViewData["Title"] = "GetAccountDetails";
+}
+
+<h1>Деталі рахунку</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AmountOfMoney)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AmountOfMoney)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Currency)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Currency)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateIn)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateIn)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CardNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CardNumber)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <h4>Витрати</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID витрати</th>
+                <th>Дата витрати</th>
+                <th>Категорія</th>
+                <th>Витрачені гроші</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var expense in Model.Expenses)
+            {
+                <tr>
+                    <td>@expense.Id</td>
+                    <td>@expense.DateIn</td>
+                    <td>@expense.CategoryName</td>
+                    <td>@expense.Money</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    @Html.ActionLink("Повернутись назад", "GetAccounts", new { userId = Model.UserId, token = Model.Token });
+</div>
+

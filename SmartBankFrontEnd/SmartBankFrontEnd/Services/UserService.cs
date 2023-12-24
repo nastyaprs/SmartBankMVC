@@ -215,9 +215,9 @@ namespace SmartBankFrontEnd.Services
             }
         }
 
-        public async Task<bool> AddNewAccount(int userId, string token)
+        public async Task<bool> AddNewAccount(int userId, int currencyId, string token)
         {
-            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.AccountCreate + userId;
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.AccountCreate + userId.ToString()+ "/" + currencyId.ToString();
 
             using (HttpClient client = new HttpClient())
             {

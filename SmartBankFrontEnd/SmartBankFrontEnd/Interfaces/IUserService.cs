@@ -10,5 +10,8 @@ namespace SmartBankFrontEnd.Interfaces
         Task<FullUserModel?> GetUserProfile(string token);
         Task<List<CategoryModel>> GetUsersCategories(int userId, string token);
         Task<bool> AddNewCategory(CategoryModel categoryModel);
+        Task<List<AccountModel>> GetUsersAccounts(int userId, string token);
+        Task<AccountDetailsModel?> GetAccountDetails(string token, int accountId);
+        Task<bool> AddNewAccount(int userId, int currencyId, string token);
     }
 }

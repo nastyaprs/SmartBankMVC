@@ -32,5 +32,8 @@
         <p>
             @Html.ActionLink("Створити нову категорію", "AddCategory", new { token = Model.First().Token, userId = Model.First().UserId })
         </p>
+        <p>
+            @Html.ActionLink("Повернутись назад", "Main", new { token = Model.First().Token })
+        </p>
     </tbody>
 </table>
