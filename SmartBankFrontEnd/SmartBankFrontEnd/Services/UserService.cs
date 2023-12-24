@@ -140,6 +140,7 @@ namespace SmartBankFrontEnd.Services
         public async Task<bool> AddNewCategory(CategoryModel categoryModel)
         {
             string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.CategoryAdd + categoryModel.UserId;
+            categoryModel.Id = 0;
 
             var jsonBody = JsonConvert.SerializeObject(categoryModel);
 
