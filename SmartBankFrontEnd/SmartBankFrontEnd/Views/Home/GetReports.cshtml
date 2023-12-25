@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SmartBankFrontEnd.Models.ReportModel>
+
+@{
+    ViewData["Title"] = "GetReports";
+}
+
+<h1>Звіти</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTo)
+            </td>
+             <td>
+                    @using (Html.BeginForm("GetReportDetails", "Home", FormMethod.Get))
+                    {
+                        @Html.Hidden("Id", item.Id)
+                        @Html.Hidden("Token", item.Token)
+                        @Html.Hidden("UserId", item.UserId)
+                        @Html.Hidden("Content", item.Content)
+                        @Html.Hidden("DateIn", item.DateIn)
+                        @Html.Hidden("DateFrom", item.DateFrom)
+                        @Html.Hidden("DateTo", item.DateTo)
+                        <button type="submit" class="btn btn-primary">Подивитись</button>
+                    }
+            </td>
+
+        </tr>
+}
+        <p>
+            @Html.ActionLink("Згенерувати новий звіт", "CreateReport", new { token = Model.First().Token, userId = Model.First().UserId })
+        </p>
+        <p>
+            @Html.ActionLink("Повернутись назад", "Main", new { token = Model.First().Token })
+        </p>
+    </tbody>
+</table>

@@ -15,5 +15,7 @@
         public const string AccountCreate = "user/account/create/";
         public const string AccountMoneyAdd = "user/account/money/add";
         public const string ExpenseAdd = "user/expense/add";
+        public const string ReportCreate = "report/create";
+        public const string ReportList = "report/list";
     }
 }

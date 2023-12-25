@@ -1,0 +1,48 @@
+﻿@model SmartBankFrontEnd.Models.ReportModel
+
+@{
+    ViewData["Title"] = "GetReportDetails";
+}
+
+<h1>Деталі звіту</h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateIn)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateIn)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateFrom)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateFrom)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateTo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateTo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.Content)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    @Html.ActionLink("Повернутись назад", "GetReports", new { token = Model.Token });
+</div>
+

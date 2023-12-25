@@ -15,5 +15,7 @@ namespace SmartBankFrontEnd.Interfaces
         Task<bool> AddNewAccount(int userId, int currencyId, string token);
         Task<bool> AddMoneyToAccount(AccountMoneyModel accountMoneyModel);
         Task<bool?> AddExpense(ExpenseAddModel expenseAddModel);
+        Task<List<ReportModel>?> GetReports(string token);
+        Task<bool> CreateReport(AddReportModel addReportModel);
     }
 }

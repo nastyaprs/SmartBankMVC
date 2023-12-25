@@ -1,0 +1,36 @@
+﻿@model SmartBankFrontEnd.Models.AddReportModel
+
+@{
+    ViewData["Title"] = "CreateReport";
+}
+
+<h1>Згенерувати звіт</h1>
+
+<h5>Введіть проміжок дат для отримання звіта</h5>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateReport">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DateFrom" class="control-label"></label>
+                <input asp-for="DateFrom" class="form-control" />
+                <span asp-validation-for="DateFrom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateTo" class="control-label"></label>
+                <input asp-for="DateTo" class="form-control" />
+                <span asp-validation-for="DateTo" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Token" />
+            <input type="hidden" asp-for="UserId" />
+            <button type="submit" class="btn btn-primary">Створити</button>
+        </form>
+    </div>
+</div>
+
+
+<div>
+    @Html.ActionLink("Повернутись назад", "GetReports", new { token = Model.Token });
+</div>
+

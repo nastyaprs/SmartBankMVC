@@ -289,5 +289,57 @@ namespace SmartBankFrontEnd.Services
                 }
             }
         }
+
+        public async Task<bool> CreateReport(AddReportModel addReportModel)
+        {
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.ReportCreate;
+
+            var jsonBody = JsonConvert.SerializeObject(addReportModel);
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", addReportModel.Token);
+
+                StringContent content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public async Task<List<ReportModel>?> GetReports(string token)
+        {
+            string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.ReportList;
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    List<ReportModel>? reports = JsonConvert.DeserializeObject<List<ReportModel>>(jsonContent);
+
+                    foreach(var report in reports)
+                    {
+                        report.Token = token;
+                    }
+
+                    return reports;
+                }
+
+                return null;
+            }
+        }
     }
 }

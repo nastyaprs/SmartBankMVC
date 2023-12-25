@@ -322,5 +322,54 @@ namespace SmartBankFrontEnd.Controllers
                 errorMessage = ""
             });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetReports(string token)
+        {
+            var reports = await _userService.GetReports(token);
+
+            return View(reports);
+        }
+
+        [HttpGet]
+        public IActionResult GetReportDetails(ReportModel reportModel)
+        {
+            return View(reportModel);
+        }
+
+        [HttpGet]
+        public IActionResult CreateReport(string token, int userId)
+        {
+            var addReport = new AddReportModel()
+            {
+                Token = token,
+                UserId = userId
+            };
+
+            return View(addReport);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateReport(AddReportModel addReportModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await _userService.CreateReport(addReportModel);
+
+                    if (result)
+                    {
+                        return RedirectToAction("GetReports", new { token = addReportModel.Token });
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+            }
+
+            return RedirectToAction("CreateReport", new { token = addReportModel.Token, userId = addReportModel.UserId });
+        }
     }
 }
