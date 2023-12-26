@@ -88,6 +88,6 @@
     {
         @Html.ActionLink("Рахунки", "GetAccounts", new { userId = Model.Id, token = Model.Token}); <br />
         @Html.ActionLink("Категорії", "GetCategories", new { token = Model.Token, id = Model.Id });<br />
-        @Html.ActionLink("Звіти", "GetReports", new { token = Model.Token });
+        @Html.ActionLink("Звіти", "GetReports", new { token = Model.Token, userId = Model.Id });
     }
 </div>

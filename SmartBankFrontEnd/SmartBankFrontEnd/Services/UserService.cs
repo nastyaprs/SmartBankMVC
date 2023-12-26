@@ -315,7 +315,7 @@ namespace SmartBankFrontEnd.Services
             }
         }
 
-        public async Task<List<ReportModel>?> GetReports(string token)
+        public async Task<List<ReportModel>?> GetReports(string token, int userId)
         {
             string apiUrl = ApiRoutes.MainApiLink + ApiRoutes.ReportList;
 
@@ -335,6 +335,15 @@ namespace SmartBankFrontEnd.Services
                         report.Token = token;
                     }
 
+                    if(reports.Count == 0)
+                    {
+                        reports.Add(new ReportModel
+                        {
+                            Id = 0,
+                            UserId = userId,
+                            Token = token
+                        });
+                    }
                     return reports;
                 }
 

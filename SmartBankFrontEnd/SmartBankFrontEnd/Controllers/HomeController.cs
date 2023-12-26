@@ -324,9 +324,9 @@ namespace SmartBankFrontEnd.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetReports(string token)
+        public async Task<IActionResult> GetReports(string token, int userId)
         {
-            var reports = await _userService.GetReports(token);
+            var reports = await _userService.GetReports(token, userId);
 
             return View(reports);
         }
@@ -360,7 +360,7 @@ namespace SmartBankFrontEnd.Controllers
 
                     if (result)
                     {
-                        return RedirectToAction("GetReports", new { token = addReportModel.Token });
+                        return RedirectToAction("GetReports", new { token = addReportModel.Token, userId = addReportModel.UserId });
                     }
                 }
             }
